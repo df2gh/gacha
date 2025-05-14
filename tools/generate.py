@@ -83,7 +83,7 @@ export const POOLS = {{
         DOLLS_POOL=dolls_pool,
         WEPONS_POOL=wepons_pool,
     )
-    path = "../assets/js/data_ja.js"
+    path = "assets/js/data_ja.js"
     with open(path, 'w', encoding='utf-8') as f:
       f.write(s)
 
