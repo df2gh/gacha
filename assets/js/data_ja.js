@@ -109,6 +109,7 @@ export const ENTRIES = {
   11047: ["メッツァルーナ", SSR, WEPON],
   11048: ["旧式ナガンリボルバー", R, WEPON],
   11049: ["ナガンリボルバー", SR, WEPON],
+  11051: ["旧式95式", R, WEPON],
   11054: ["旧式StG36", R, WEPON],
 };
 
