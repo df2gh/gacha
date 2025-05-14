@@ -48,10 +48,10 @@ def parse_pools(parts):
 
 
 def main():
-    items = parse_file("../data/items.md", parse_items)
-    dolls = parse_file("../data/dolls.md", parse_dolls)
-    wepons = parse_file("../data/wepons.md", parse_wepons)
-    dolls_pool, wepons_pool = parse_file("../data/pools.md", parse_pools)
+    items = parse_file("data/items.md", parse_items)
+    dolls = parse_file("data/dolls.md", parse_dolls)
+    wepons = parse_file("data/wepons.md", parse_wepons)
+    dolls_pool, wepons_pool = parse_file("data/pools.md", parse_pools)
 
     template = """
 export const [ITEM, WEPON, DOLL, UNKNOWN] = [0, 1, 2, 3];
