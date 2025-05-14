@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title id="document-title">ガチャ履歴</title>
+  <link rel="icon" href="data:,">
+  <link href="./assets/css/stylesheet.css" rel="stylesheet">
+</head>
+<body class="bg-color font-color">
+<script type="module" src="./assets/js/app.js"></script>
+<div id="menu" style="position: absolute; left: 80%">
+  <input type="button" value="履歴" id="history-button">
+  <input type="button" value="設定" id="setup-button">
+  <input type="button" value="？" id="how-to-button">
+</div>
+
+<div id="setup" class="popup hidden bg-color">
+  <div class="hidden" id="error" style="color: #f00"></div>
+  <table>
+    <tr><td>プレイヤーデータから読み込み - <a href="https://exilium.moe/ja/import">読み込み方法</a></td></tr>
+    <tr><td><input type="text" size="80" id="player-data"></td></tr>
+    <tr><td><input type="button" value="読み込み" id="player-data-button"></td></tr>
+  </table>
+  <hr>
+  <table>
+    <tr><td>uid</td></tr>
+    <tr><td><input type="text" size="80" id="uid"></td></tr>
+    <tr><td>access_token</td></tr>
+    <tr><td><input type="text" size="80" id="token"></td></tr>
+    <tr><td><input type="button" value="読み込み" id="data-set-button"></td></tr>
+  </table>
+</div>
+
+<div id="history" class="popup hidden bg-color">
+  <input type="button" value="閉じる" id="history-close" style="position: absolute; left: 90%; top: 1.55em;">
+  <h3 class="heading-color">履歴</h3>
+  <table id="history-table-head">
+    <tr><td><input type="button" value="すべての履歴をダウンロード" id="history-all-download"></td></tr>
+    <tr><td><input type="button" value="サーバーから現在取得可能な履歴をダウンロード" id="history-server-download"></td></tr>
+  </table>
+  <table id="history-table">
+  </table>
+  <table>
+    <tr><td><input type="button" value="アップロード" id="history-upload"></td></tr>
+  </table>
+  <a href="" id="misterybox-link" class="hidden"></a>
+  <input type="file" class="hidden" id="history-file" accept="application/gzip;application/json">
+  <p>アップロード後にページがリロードされます。</p>
+</div>
+
+<div id="msgbox" class="bg-color hidden">
+  <div id="message">メッセージ</div>
+  <div style="margin-top: 1.5em">
+    <input id="msgbox-ok" type="button" value="OK"> <input id="msgbox-cancel" type="button" value="キャンセル">
+  </div>
+</div>
+
+<h3 class="heading-color">カテゴリー</h3>
+<div class="categories">
+  <div class="category category-border" id="limited">
+    <table class="category-table">
+      <tr><td class="category-name">限定訪問</td><td id="limited-count" class="count"></td></tr>
+    </table>
+  </div>
+  <div class="category category-border" id="wepon">
+    <table class="category-table">
+      <tr><td class="category-name">軍備拡張</td><td id="wepon-count" class="count"></td></tr>
+    </table>
+  </div>
+  <div class="category category-border" id="standard">
+    <table class="category-table">
+      <tr><td class="category-name">常駐訪問</td><td id="standard-count" class="count"></td></tr>
+    </table>
+  </div>
+  <div class="category category-border" id="startdash">
+    <table class="category-table">
+      <tr><td class="category-name">スタートダッシュ訪問</td><td id="startdash-count" class="count"></td></tr>
+    </table>
+  </div>
+  <div class="category category-border" id="misterybox">
+    <table class="category-table">
+      <tr><td class="category-name">ミステリーボックス</td><td id="misterybox-count" class="count"></td></tr>
+    </table>
+  </div>
+</div>
+
+<div id="stat">
+  <h3 id="stat-title" class="heading-color">概要</h3>
+  <div class="statistics" id="stat-body">
+    <div class="stat category-border category-single" id="pull">
+      <table class="category-table">
+        <tr><td class="category-name">回数</td><td id="pull-count" class="count"></td></tr>
+      </table>
+    </div>
+    <div class="stat category-border" id="ssr">
+      <table class="category-table">
+        <tr><td class="category-name">SSR 出現回数</td><td id="ssr-count" class="count"></td></tr>
+        <tr><td class="category-name">SSR 平出現回数</td><td id="ssr-average" class="count"></td></tr>
+      </table>
+    </div>
+    <div class="stat category-border" id="sr">
+      <table class="category-table">
+        <tr><td class="category-name">SR 出現回数</td><td id="sr-count" class="count"></td></tr>
+        <tr><td class="category-name">SR 平均出現回数</td><td id="sr-average" class="count"></td></tr>
+      </table>
+    </div>
+    <div class="stat category-border category-single" id="lose">
+      <table class="category-table">
+        <tr><td class="category-name">すり抜け</td><td id="lose-ratio" class="count"></td></tr>
+        <tr><td class="category-name">すり抜け(確定込み)</td><td id="lose-wsettled-ratio" class="count"></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<h3 class="heading-color">結果</h3>
+<div class="result">
+  <div id="image-result" class="hidden">
+    <div id="image-container">
+      <div class="toggle-box">
+        <div id="image-sr" class="toggle-item toggle-sr-on">SR</div>
+        <div id="image-ssr" class="toggle-item toggle-ssr-on">SSR</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="misterybox-images" class="hidden"></div>
+
+  <div id="misterybox-outer" class="hidden">
+    <div id="misterybox-result">
+      <div id="misterybox-image-outer">
+        <canvas id="misterybox-image" width="600" height="370"></canvas>
+        <div><input type="button" value="ダウンロード" id="misterybox-image-download" class="hidden"></div>
+      </div>
+    </div>
+    <div><a id="misterybox-image-link" class="hidden"></a></div>
+  </div>
+
+  <div id="list-result" class="hidden">
+    <div id="list-container">
+      <div class="toggle-box">
+        <div id="list-r" class="toggle-item toggle-r-off">R</div>
+        <div id="list-sr" class="toggle-item toggle-sr-on">SR</div>
+        <div id="list-ssr" class="toggle-item toggle-ssr-on">SSR</div>
+      </div>
+    </div>
+  </div>
+
+  <a id="download-link" class="hidden"></a>
+</div>
+
+<div id="how-to" class="popup hidden bg-color" style="position: absolute; top: 1em;">
+  <input type="button" value="閉じる" id="how-to-close" style="position: absolute; left: 90%; top: 1.55em;">
+  <h3 class="heading-color">使い方</h3>
+    <p><a href="https://exilium.moe/ja/import">読み込み方法</a></p>
+    <p>他の説明はこちらへ <a href="https://github.com/df2gh/gacha">https://github.com/df2gh/gacha</a></p>
+  <h3 class="heading-color">表示説明</h3>
+  <p>限定訪問と軍備拡張ではSSRのすり抜けを表示します。</p>
+  <table>
+    <tr>
+      <td style="background: orange">
+        <svg id="circle" viewBox="0 0 24 24" width="11" height="11" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="white" fill="#00000000" stroke-width="3" />
+        </svg>
+      </td>
+      <td>すり抜けず</td>
+    </tr>
+    <tr>
+      <td style="background: orange">
+        <svg id="cross" viewBox="0 0 24 24" width="11" height="11" xmlns="http://www.w3.org/2000/svg">
+          <line x1="3" y1="3" x2="21" y2="21" stroke="white" stroke-width="3" />
+          <line x1="21" y1="3" x2="3" y2="21" stroke="white" stroke-width="3" />
+        </svg>
+      </td>
+      <td>すり抜け</td>
+    </tr>
+    <tr>
+      <td style="background: orange">
+        <svg id="triangle" viewBox="0 0 24 24" width="11" height="11" xmlns="http://www.w3.org/2000/svg">
+          <line x1="12" y1="3" x2="2" y2="21" stroke="white" stroke-width="3" />
+          <line x1="2" y1="21" x2="22" y2="21" stroke="white" stroke-width="3" />
+          <line x1="22" y1="21" x2="12" y2="3" stroke="white" stroke-width="3" />
+          </svg>
+      </td>
+      <td>すり抜け後の確定</td>
+    </tr>
+  </table>
+  <h3 class="heading-color">不明ID報告</h3>
+  <p>データ不足のため、武器IDに対する名称が不明な項目があります。
+  訪問回のデータも同様の理由で不足しています。</p>
+  <p>不明なデータがあると結果の概要が正しく表示されません。</p>
+  <p>不明表示をクリックした先のフォームで報告していただけると助かります。</p>
+  <p><a href="https://tally.so/r/wLgEdy">https://tally.so/r/wLgEdy</a></p>
+  <h3 class="heading-color">開発</h3>
+  <p><a href="https://github.com/df2gh/gacha">https://github.com/df2gh/gacha</a></p>
+</div>
+
+</body>
+</html>
