@@ -99,6 +99,7 @@ export const ENTRIES = {
   11031: ["ロビンソン小銃", SR, WEPON],
   11036: ["旧式AK-Alfa", R, WEPON],
   11037: ["AK-Alfa", SR, WEPON],
+  11038: ["遊星", SSR, WEPON],
   11039: ["旧式MP7H1", R, WEPON],
   11040: ["MP7H1", SR, WEPON],
   11042: ["旧式191式", R, WEPON],
@@ -111,6 +112,7 @@ export const ENTRIES = {
   11049: ["ナガンリボルバー", SR, WEPON],
   11051: ["旧式95式", R, WEPON],
   11054: ["旧式StG36", R, WEPON],
+  11055: ["StG36", SR, WEPON],
 };
 
 export const POOLS = {
