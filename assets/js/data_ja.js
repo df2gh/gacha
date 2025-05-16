@@ -62,6 +62,7 @@ export const ENTRIES = {
   10231: ["旧式KSVK", R, WEPON],
   10331: ["旧式M1891", R, WEPON],
   10332: ["M1891", SR, WEPON],
+  10333: ["ミエティエリ", SSR, WEPON],
   10341: ["旧式W 2000", R, WEPON],
   10342: ["W 2000", SR, WEPON],
   10343: ["ビターキャラメル", SSR, WEPON],
@@ -111,6 +112,7 @@ export const ENTRIES = {
   11048: ["旧式ナガンリボルバー", R, WEPON],
   11049: ["ナガンリボルバー", SR, WEPON],
   11051: ["旧式95式", R, WEPON],
+  11052: ["95式", SR, WEPON],
   11054: ["旧式StG36", R, WEPON],
   11055: ["StG36", SR, WEPON],
 };
