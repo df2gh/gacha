@@ -82,6 +82,8 @@ export const ENTRIES = {
   10521: ["旧式416", R, WEPON],
   10522: ["416", SR, WEPON],
   10523: ["スキュラ", SSR, WEPON],
+  10541: ["旧式K2", R, WEPON],
+  10542: ["K2", SR, WEPON],
   11007: ["野兎", SR, WEPON],
   11008: ["旧式.380 Curva", R, WEPON],
   11009: ["旧式.50 Nemesis", R, WEPON],
