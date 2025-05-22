@@ -60,6 +60,7 @@ export const ENTRIES = {
 
   // wepons
   10231: ["旧式KSVK", R, WEPON],
+  10232: ["KSVK", SR, WEPON],
   10331: ["旧式M1891", R, WEPON],
   10332: ["M1891", SR, WEPON],
   10333: ["ミエティエリ", SSR, WEPON],
