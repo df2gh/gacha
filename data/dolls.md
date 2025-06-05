@@ -39,6 +39,7 @@
 |1056|リヴァ|SSR|
 |1057|ロベラ|SSR|
 |1058|レイニー|SSR|
+|1064|フローレンス|SSR|
 
 # https://gf2.sunborngame.com/main/allRoles
 # https://gf2.haoplay.com/jp/roleinfo/allroles.html
