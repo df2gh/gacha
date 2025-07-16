@@ -31,7 +31,12 @@ const PERMANENT_WEPONS = {
 //const PERMANENT_WEPON_PU_1 = ; // 遊星
 //const PERMANENT_WEPON_PU_2 = ; // ミエティエリ
 
-const API_ADDR = "https://gf2-gacha-record-jp.haoplay.com/list";
+const API_ADDR_JP = "https://gf2-gacha-record-jp.haoplay.com/list";
+const API_ADDR_INTL = "https://gf2-gacha-record-intl.haoplay.com/list";
+const API_TARGETS = {
+  "hj": API_ADDR_JP,
+  "hi": API_ADDR_INTL,
+};
 const UNKNOWN_FORM = "https://tally.so/r/wLgEdy";
 
 const CATEGORY_STANDARD = "1";
@@ -198,7 +203,8 @@ async function loadDataFromServer(category) {
   const userData = new UserDataManager().read();
   const entries = [];
   const mostRecent = await historyManager.mostRecentTime(category);
-  const f = new Fetcher(userData.uid, userData.token, category, entries, mostRecent);
+  const server = userData.server;
+  const f = new Fetcher(userData.uid, userData.token, category, entries, mostRecent, server);
   await f.fetch();
   fetchedEntry[category] = new History(category, entries, "");
 }
@@ -795,12 +801,13 @@ function switchCategory(categoryName) {
 /// type_id: 1: 常駐訪問, 3: 限定訪問, 4: 軍備拡張
 /// 5: スタートダッシュ訪問, 8: ミステリーボックス
 class Fetcher {
-  constructor(uid, token, type_id, entries, lastTime) {
+  constructor(uid, token, type_id, entries, lastTime, server=null) {
     this.uid = uid;
     this.token = token;
     this.type_id = type_id;
     this.next_id = null;
-    this.target = API_ADDR;
+    this.server = server ? server : "hj";
+    this.target = server ? API_TARGETS[server] : API_ADDR_JP;
     this.entries = entries;
     this.lastTime = lastTime;
   }
@@ -859,6 +866,8 @@ class Fetcher {
       // uid or token is wrong
       setText("error", "uid または token が違います");
       showElement("error", true);
+      console.log(this.server);
+      setSelected("server", this.server);
       showElement("setup", true);
       return;
     }
@@ -898,8 +907,8 @@ class UserDataManager {
   }
 
   /// Stores user data into the storage.
-  store = (uid, token) => {
-    const data = { uid: uid, token: token };
+  store = (uid, token, server) => {
+    const data = { uid: uid, token: token, server: server };
     localStorage.setItem(this.getDataKey(), JSON.stringify(data));
   }
 }
@@ -909,7 +918,7 @@ function readUserDataFromPlayerData() {
   const s = getValue("player-data");
   try {
     const data = JSON.parse(s);
-    readUserData(data.uid, data.token);
+    readUserData(data.uid, data.token, data.server);
   } catch (e) {
     console.log(e);
   }
@@ -917,15 +926,16 @@ function readUserDataFromPlayerData() {
 
 /// Reads from set of uid and token.
 function readFromDataSet() {
+  const server = getSelected("server").textContent;
   const uid = getValue("uid");
   const token = getValue("token");
-  readUserData(uid, token);
+  readUserData(uid, token, server);
 }
 
 /// Stores user data.
-function readUserData(uid, token) {
+function readUserData(uid, token, server) {
   const m = new UserDataManager();
-  m.store(uid, token);
+  m.store(uid, token, server);
 
   showElement("setup", false);
   showElement("error", false);
@@ -938,7 +948,7 @@ async function fetchHistoryAndDownload(categories, prefix) {
   const history = {};
   for (const category of categories) {
     const entries = [];
-    const f = new Fetcher(userData.uid, userData.token, category, entries, 0);
+    const f = new Fetcher(userData.uid, userData.token, category, entries, 0, userData.server);
     await f.fetch();
     history[category] = entries;
   }
@@ -1539,6 +1549,21 @@ function setText(id, s) {
 /// Returns node value specified by the id.
 function getValue(id) {
   return document.getElementById(id).value;
+}
+
+function getSelected(id) {
+  return document.getElementById(id).selectedOptions[0];
+}
+
+function setSelected(id, item) {
+  const selector = document.getElementById(id);
+  const options = selector.options;
+  for (let i = 0; i < options.length; i++) {
+    if (options[i].textContent == item) {
+      selector.selectedIndex = i;
+      return;
+    }
+  }
 }
 
 /// Set event listener to the node specified by the id.
